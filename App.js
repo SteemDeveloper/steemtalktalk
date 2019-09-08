@@ -1,11 +1,17 @@
 import React from 'react';
-import { AppLoading } from 'expo';
 
+import { Provider } from 'mobx-react';
+import { Root } from 'native-base';
+
+import { AppLoading } from 'expo';
 import * as Font from 'expo-font';
 import { Asset } from 'expo-asset';
 import { Ionicons } from '@expo/vector-icons';
+import { AsyncStorage } from 'react-native';
 
 import Navigator from './app/Navigate';
+
+import AccountStore from './app/stores/AccountStore';
 
 function cacheImages(images) {
   return images.map(image => {
@@ -22,10 +28,22 @@ function cacheFonts(fonts) {
 
 export default class RootComponent extends React.Component {
   state = {
+    accountStore: AccountStore.create(),
     isReady: false,
   };
 
-  async _loadAssetsAsync() {
+  // 계정 정보 불러오기
+  async _loadAccount() {
+    let storedAccount = await AsyncStorage.getItem('account');
+    if (storedAccount) {
+      try {
+        const accountJson = JSON.parse(storedAccount);
+        this.state.accountStore.add(accountJson);
+      } catch (e) {}
+    }
+  }
+
+  async _loadAsync() {
     const fontAssets = cacheFonts([
       //   require('native-base/Fonts/Roboto.ttf'),
       //   require('native-base/Fonts/Roboto_medium.ttf'),
@@ -48,20 +66,26 @@ export default class RootComponent extends React.Component {
       require('./assets/avatar/user6.jpg'),
     ]);
 
-    await Promise.all([...imageAssets, ...fontAssets]);
+    await Promise.all([this._loadAccount, ...imageAssets, ...fontAssets]);
   }
 
   render() {
-    if (this.state.isReady) {
+    if (!this.state.isReady) {
       return (
         <AppLoading
-          startAsync={this._loadAssetsAsync}
+          startAsync={this._loadAsync}
           onFinish={() => this.setState({ isReady: true })}
           onError={console.warn}
         />
       );
     }
 
-    return <Navigator onNavigationStateChange={null} />;
+    return (
+      <Root>
+        <Provider accountStore={this.state.accountStore}>
+          <Navigator onNavigationStateChange={null} />
+        </Provider>
+      </Root>
+    );
   }
 }
