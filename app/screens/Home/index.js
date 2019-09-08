@@ -1,5 +1,5 @@
 import React from 'react';
-import { observer, inject } from 'mobx-react'
+import { observer, inject } from 'mobx-react';
 
 import {
   ScrollView,
@@ -41,12 +41,12 @@ class Home extends React.Component {
 
   componentWillMount() {
     const { accountStore } = this.props;
-    if(!accountStore.isExist) {
-      
+    if (!accountStore.isExist) {
     }
   }
 
   render() {
+    // console.log('useDrawer', useDrawer)
     console.log('[Home] props:', this.props);
     console.log('[AccountStore] isExist:', this.props.accountStore.isExist);
     const { navigation } = this.props;

@@ -26,16 +26,15 @@ const AccountStore = types
   .actions(self => ({
     put(account) {
       if (Account.is(account)) {
-          self.account = account;
+        self.account = account;
       }
     },
     // 계정 로드
     load: flow(function* load() {
       const storedAccount = yield AsyncStorage.getItem(KEY.ACCOUNT);
-      console.log('[AccountStore]', 'storedAccount', storedAccount);
-      if (Account.is(storedAccount)) {
-        // applySnapshot(self.account, accountInfo);
-        const accountJson = JSON.parse(storedAccount);
+      console.log('[AccountStore]', 'storedAccount', accountJson);
+      const accountJson = JSON.parse(storedAccount);
+      if (Account.is(accountJson)) {
         self.account = Account.create(accountJson);
       }
       self.loaded = true;
@@ -50,6 +49,16 @@ const AccountStore = types
     },
     afterCreate() {
       self.load();
+      // onSnapshot(self, snapshot => {
+      //   AsyncStorage.setItem(KEY.ACCOUNT, JSON.stringify(snapshot));
+      // });
+    },
+    addAccount(account) {
+      console.log('[AccountStore][addAccount]', Account.is(account));
+      if (Account.is(account)) {
+        // applySnapshot(self.account, account)
+        self.account = Account.create(account);
+      }
     },
   }));
 
