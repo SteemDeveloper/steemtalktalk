@@ -7,11 +7,12 @@ import { AppLoading } from 'expo';
 import * as Font from 'expo-font';
 import { Asset } from 'expo-asset';
 import { Ionicons } from '@expo/vector-icons';
-import { AsyncStorage } from 'react-native';
+// import { AsyncStorage } from 'react-native';
 
 import Navigator from './app/Navigate';
 
-import AccountStore from './app/stores/AccountStore';
+// import AccountStore from './app/stores/AccountStore';
+import store from './app/stores';
 
 function cacheImages(images) {
   return images.map(image => {
@@ -28,22 +29,22 @@ function cacheFonts(fonts) {
 
 export default class RootComponent extends React.Component {
   state = {
-    accountStore: AccountStore.create(),
+    // accountStore: AccountStore.create(),
     isReady: false,
   };
 
   // 계정 정보 불러오기
-  async _loadAccount() {
-    let storedAccount = await AsyncStorage.getItem('account');
-    if (storedAccount) {
-      try {
-        const accountJson = JSON.parse(storedAccount);
-        this.state.accountStore.add(accountJson);
-      } catch (e) {}
-    }
-  }
+  // async _loadAccount() {
+  //   let storedAccount = await AsyncStorage.getItem('account');
+  //   if (storedAccount) {
+  //     try {
+  //       const accountJson = JSON.parse(storedAccount);
+  //       this.state.accountStore.add(accountJson);
+  //     } catch (e) {}
+  //   }
+  // }
 
-  async _loadAsync() {
+  async _loadAssetsAsync() {
     const fontAssets = cacheFonts([
       //   require('native-base/Fonts/Roboto.ttf'),
       //   require('native-base/Fonts/Roboto_medium.ttf'),
@@ -66,14 +67,14 @@ export default class RootComponent extends React.Component {
       require('./assets/avatar/user6.jpg'),
     ]);
 
-    await Promise.all([this._loadAccount, ...imageAssets, ...fontAssets]);
+    await Promise.all([...imageAssets, ...fontAssets]);
   }
 
   render() {
     if (!this.state.isReady) {
       return (
         <AppLoading
-          startAsync={this._loadAsync}
+          startAsync={this._loadAssetsAsync}
           onFinish={() => this.setState({ isReady: true })}
           onError={console.warn}
         />
@@ -81,11 +82,11 @@ export default class RootComponent extends React.Component {
     }
 
     return (
-      <Root>
-        <Provider accountStore={this.state.accountStore}>
+      <Provider {...store}>
+        <Root>
           <Navigator onNavigationStateChange={null} />
-        </Provider>
-      </Root>
+        </Root>
+      </Provider>
     );
   }
 }

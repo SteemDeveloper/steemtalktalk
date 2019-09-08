@@ -19,7 +19,7 @@ const AccountStore = types
     loaded: false,
   })
   .views(self => ({
-    isExisted() {
+    get isExist() {
       return self.account !== null;
     },
   }))
@@ -31,11 +31,12 @@ const AccountStore = types
     },
     // 계정 로드
     load: flow(function* load() {
-      const accountInfo = yield AsyncStorage.getItem(KEY.ACCOUNT);
-      console.log('[AccountStore]', 'accountInfo', accountInfo);
-      if (Account.is(accountInfo)) {
+      const storedAccount = yield AsyncStorage.getItem(KEY.ACCOUNT);
+      console.log('[AccountStore]', 'storedAccount', storedAccount);
+      if (Account.is(storedAccount)) {
         // applySnapshot(self.account, accountInfo);
-        self.account = Account.create(accountInfo);
+        const accountJson = JSON.parse(storedAccount);
+        self.account = Account.create(accountJson);
       }
       self.loaded = true;
     }),

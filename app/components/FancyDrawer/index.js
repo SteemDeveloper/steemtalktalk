@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import {
   ScrollView,
   View,
@@ -58,7 +58,7 @@ export default class FancyDrawer extends React.Component {
           pagingEnabled
           showsHorizontalScrollIndicator={false}
           scrollEventThrottle={16}
-          onScroll={this._handleScroll}
+          // onScroll={this._handleScroll}
           contentOffset={{ x: profileWidth, y: 0 }}
           ref={ref => (this.scroll = ref)}
         >
@@ -68,7 +68,6 @@ export default class FancyDrawer extends React.Component {
             profileUserName={this.props.profileUserName}
             profileExtra={this.props.profileExtra}
           />
-
           <View
             style={[
               styles.container,
@@ -81,6 +80,7 @@ export default class FancyDrawer extends React.Component {
             {this.state.isScrolled && (
               <TouchableOpacity
                 onPress={this._showProfile.bind(this, profileWidth)}
+                // onPress={this._showProfile}
                 style={[
                   {
                     position: 'absolute',

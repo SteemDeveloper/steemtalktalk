@@ -1,4 +1,6 @@
 import React from 'react';
+import { observer, inject } from 'mobx-react'
+
 import {
   ScrollView,
   Text,
@@ -19,7 +21,7 @@ const styles = StyleSheet.create({
     width,
     backgroundColor: colors.exexlight_gray,
   },
-  image: {
+  iconImage: {
     height: 30,
     width: 30,
   },
@@ -37,7 +39,16 @@ const styles = StyleSheet.create({
 class Home extends React.Component {
   state = {};
 
+  componentWillMount() {
+    const { accountStore } = this.props;
+    if(!accountStore.isExist) {
+      
+    }
+  }
+
   render() {
+    console.log('[Home] props:', this.props);
+    console.log('[AccountStore] isExist:', this.props.accountStore.isExist);
     const { navigation } = this.props;
     return (
       <NavigationWraper
@@ -46,7 +57,7 @@ class Home extends React.Component {
         rightIcon={
           <TouchableOpacity style={{ padding: 5 }}>
             <Image
-              style={styles.image}
+              style={styles.iconImage}
               source={require('../../../assets/topStar.png')}
               resizeMode={'contain'}
             />
@@ -70,4 +81,4 @@ class Home extends React.Component {
   }
 }
 
-export default Home;
+export default inject('accountStore')(observer(Home));

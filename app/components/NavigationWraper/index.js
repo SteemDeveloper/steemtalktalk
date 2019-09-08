@@ -7,15 +7,21 @@ import FancyBottomTab from '../FancyBottomTab';
 import TweetBubble from '../TweetBubble';
 
 class NavigationWraper extends React.Component {
-  _handleShowDrawer = () => this.drawer._showProfile(0);
-  _handleHeaderFade = i => this.header._fadeAvatar(i);
+  _handleShowDrawer = () => {
+    console.log('[NavigationWraper][_handleShowDrawer]')
+    this.drawer._showProfile(0)
+  };
+  _handleHeaderFade = item => this.header._fadeAvatar(item);
 
-  _changeScreen = screen =>
+  _changeScreen = screen => {
+    console.log('[NavigationWraper][_changeScreen] screen:', screen);
     this.props.navigation.navigate(screen, {
       last: this.props.navigation.state.routeName,
     });
+  }
 
   render() {
+    console.log('[NavigationWraper] drawer:', this.drawer);
     return (
       <FancyDrawer
         fading={this._handleHeaderFade}
@@ -50,7 +56,11 @@ class NavigationWraper extends React.Component {
           rightIcon={this.props.rightIcon}
           style={this.props.headerStyle}
         />
+
+        {/* contents */}
         {this.props.children}
+        {/* contents */}
+
         <TweetBubble
           message={this.props.selected !== 3}
           onBubblePress={
@@ -58,10 +68,6 @@ class NavigationWraper extends React.Component {
               ? this._changeScreen.bind(this, 'New Tweet')
               : this._changeScreen.bind(this, 'New Message')
           }
-        />
-        <FancyBottomTab
-          selected={this.props.selected}
-          navigation={this._changeScreen}
         />
       </FancyDrawer>
     );
