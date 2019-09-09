@@ -93,6 +93,7 @@ class Login extends Component {
     try {
       const account = {
         type: 'token',
+        id: userToken.username,
         username: userToken.username,
         accessToken: userToken.access_token,
         expiresIn: parseInt(userToken.expires_in),

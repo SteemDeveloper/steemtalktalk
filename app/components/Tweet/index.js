@@ -6,7 +6,7 @@ import Avatar from '../../components/Avatar';
 import { generateTwitterText, colors, width } from '../../utils';
 import { SimpleLineIcons, MaterialCommunityIcons } from '@expo/vector-icons';
 
-export default class Tweet extends React.Component {
+class Tweet extends React.Component {
   renderTopText(type, text) {
     text += type === 'retweet' ? ' retweet' : ' response';
 
@@ -62,16 +62,19 @@ export default class Tweet extends React.Component {
   }
 
   render() {
+    // console.log('[Tweet] props:', this.props);
     let {
       type,
-      user,
-      userName,
+      author,
+      reputation,
       avatar,
+      title,
+      category,
       time,
-      message,
-      comments,
-      retweets,
+      children,
       likes,
+      body,
+      retweets = 0,
     } = this.props.data;
 
     return (
@@ -86,11 +89,11 @@ export default class Tweet extends React.Component {
             : { paddingBottom: 15 },
         ]}
       >
-        {type === 'retweet' && this.renderTopText(type, this.props.data.from)}
+        {/* {type === 'retweet' && this.renderTopText(type, this.props.data.from)}
         {type === 'responseTo' && this.renderTopText(type, user)}
-        {type === 'responseTo' && <Tweet data={this.props.data.original} />}
+        {type === 'responseTo' && <Tweet data={this.props.data.original} />} */}
         <View style={{ flexDirection: 'row' }}>
-          <Avatar size={50} photo={avatar} />
+          <Avatar size={50} photo={{ url: avatar }} />
           <View style={{ marginLeft: 10, flex: 1 }}>
             <View
               style={{
@@ -107,9 +110,11 @@ export default class Tweet extends React.Component {
                   justifyContent: 'center',
                 }}
               >
-                <Text style={{ fontSize: 16, fontWeight: '500' }}>{user}</Text>
+                <Text style={{ fontSize: 16, fontWeight: '500' }}>
+                  @{author}({reputation})
+                </Text>
                 <Text style={{ paddingLeft: 5, color: colors.dark_gray }}>
-                  {userName}
+                  {category}
                 </Text>
                 <View
                   style={{
@@ -130,15 +135,26 @@ export default class Tweet extends React.Component {
             </View>
             <View style={{ flex: 1 }}>
               {generateTwitterText(
-                <Text
-                  style={{
-                    fontSize: 16,
-                    fontWeight: '400',
-                    fontFamily: 'HelveticaNeue',
-                  }}
-                >
-                  {message}
-                </Text>,
+                <>
+                  <Text
+                    style={{
+                      fontSize: 16,
+                      fontWeight: '400',
+                      fontFamily: 'HelveticaNeue',
+                    }}
+                  >
+                    {title}
+                  </Text>
+                  <Text
+                    style={{
+                      fontSize: 16,
+                      fontWeight: '400',
+                      fontFamily: 'HelveticaNeue',
+                    }}
+                  >
+                    {body.substr(0, 100)}
+                  </Text>
+                </>,
               )}
             </View>
             <View
@@ -150,7 +166,7 @@ export default class Tweet extends React.Component {
                 marginTop: 15,
               }}
             >
-              {this.renderBottomIcons('comment-outline', comments)}
+              {this.renderBottomIcons('comment-outline', children)}
               {this.renderBottomIcons('twitter-retweet', retweets)}
               {this.renderBottomIcons('heart-outline', likes)}
               {this.renderBottomIcons('share-outline', 0)}
@@ -161,3 +177,5 @@ export default class Tweet extends React.Component {
     );
   }
 }
+
+export default Tweet;

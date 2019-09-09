@@ -136,7 +136,7 @@ class Drawer extends React.Component {
             <DrawerItem
               key={index.toString()}
               data={item}
-              changeScreen={this.props.changeScreen}
+              // changeScreen={this.props.changeScreen}
             />
           ))}
         </ScrollView>

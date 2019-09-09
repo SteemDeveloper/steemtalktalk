@@ -1,16 +1,22 @@
-import React from 'react';
+import React, { useRef } from 'react';
+import { StyleSheet } from 'react-native';
 
-import { Provider } from 'mobx-react';
+import { Provider as StoreProvider } from 'mobx-react';
 import { Root } from 'native-base';
+import Drawer from 'react-native-drawer';
 
 import { AppLoading } from 'expo';
 import * as Font from 'expo-font';
 import { Asset } from 'expo-asset';
 import { Ionicons } from '@expo/vector-icons';
 
-import Navigator from './app/Navigate';
-
+import Context from './app/context';
 import store from './app/stores';
+
+import Navigator from './app/navigator';
+
+// import ControlPanel from './app/components/ControlPanel';
+import ControlPanel from './app/components/FancyDrawer';
 
 function cacheImages(images) {
   return images.map(image => {
@@ -25,10 +31,19 @@ function cacheFonts(fonts) {
   return fonts.map(font => Font.loadAsync(font));
 }
 
+const drawerStyles = {
+  drawer: { shadowColor: '#000000', shadowOpacity: 0.8, shadowRadius: 3 },
+  main: { paddingLeft: 3 },
+};
+
 export default class RootComponent extends React.Component {
-  state = {
-    isReady: false,
-  };
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      isReady: false,
+    };
+  }
 
   async _loadAssetsAsync() {
     const fontAssets = cacheFonts([
@@ -36,7 +51,7 @@ export default class RootComponent extends React.Component {
       { Roboto: require('native-base/Fonts/Roboto.ttf') },
       { Roboto_medium: require('native-base/Fonts/Roboto_medium.ttf') },
       {
-        'Sweet_Sensations_Personal_Use': require('./assets/fonts/Sweet_Sensations_Personal_Use.ttf'),
+        Sweet_Sensations_Personal_Use: require('./assets/fonts/Sweet_Sensations_Personal_Use.ttf'),
       },
     ]);
 
@@ -71,11 +86,11 @@ export default class RootComponent extends React.Component {
     }
 
     return (
-      <Provider {...store}>
+      <StoreProvider {...store}>
         <Root>
           <Navigator onNavigationStateChange={null} />
         </Root>
-      </Provider>
+      </StoreProvider>
     );
   }
 }

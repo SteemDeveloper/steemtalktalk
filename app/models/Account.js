@@ -2,6 +2,7 @@ import { types } from 'mobx-state-tree';
 
 const Account = types
   .model('Account', {
+    id: types.identifier,
     type: types.string,
     username: types.string,
     accessToken: types.string,

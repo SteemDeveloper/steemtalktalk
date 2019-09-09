@@ -2,7 +2,6 @@ import React from 'react';
 import { View, Text, SafeAreaView, StyleSheet } from 'react-native';
 
 import { colors } from '../../utils';
-import Context from '../../Context';
 
 import Header from '../Header';
 import TweetBubble from '../TweetBubble';
@@ -25,29 +24,23 @@ class NavigationWraper extends React.Component {
 
   render() {
     return (
-      <Context.Consumer>
-        {({ openDrawer, closeDrawer }) => {
-          return (
-            <SafeAreaView style={styles.container}>
-              <Header
-                showProfile={openDrawer}
-                title={this.props.title}
-                rightIcon={this.props.rightIcon}
-                style={this.props.headerStyle}
-              />
+      <SafeAreaView style={styles.container}>
+        <Header
+          // showProfile={openDrawer}
+          title={this.props.title}
+          rightIcon={this.props.rightIcon}
+          style={this.props.headerStyle}
+        />
 
-              {/* contents */}
-              {this.props.children}
-              {/* contents */}
+        {/* contents */}
+        {this.props.children}
+        {/* contents */}
 
-              <TweetBubble
-                message={this.props.selected !== 3}
-                onBubblePress={this._changeScreen}
-              />
-            </SafeAreaView>
-          );
-        }}
-      </Context.Consumer>
+        <TweetBubble
+          message={this.props.selected !== 3}
+          onBubblePress={this._changeScreen}
+        />
+      </SafeAreaView>
     );
   }
 }

@@ -45,7 +45,7 @@ class Header extends React.Component {
   }
 
   render() {
-    let { rightIcon: icon, style, faded, showProfile, title } = this.props;
+    let { rightIcon: icon, style, faded, showProfile, title, avatar } = this.props;
     if (!icon) {
       icon = <View style={{ width: 30, height: 30 }} />;
     }
@@ -62,7 +62,7 @@ class Header extends React.Component {
           onPress={showProfile}
           activeOpacity={1.5}
         />
-        <Avatar />
+        <Avatar photo={avatar} />
         {title}
         {icon}
       </View>

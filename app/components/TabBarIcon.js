@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 const TabBarIcon = props => {
-  console.log('[TabBarIcon] props', props);
+  // console.log('[TabBarIcon] props', props);
   const { focused, name, tintColor } = props;
   return (
     <MaterialCommunityIcons

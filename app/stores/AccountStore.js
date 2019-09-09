@@ -6,6 +6,7 @@ import {
   flow,
   is,
 } from 'mobx-state-tree';
+
 import { AsyncStorage } from 'react-native';
 import Account from '../models/Account';
 
@@ -24,11 +25,11 @@ const AccountStore = types
     },
   }))
   .actions(self => ({
-    put(account) {
-      if (Account.is(account)) {
-        self.account = account;
-      }
-    },
+    // put(account) {
+    //   if (Account.is(account)) {
+    //     self.account = account;
+    //   }
+    // },
     // 계정 로드
     load: flow(function* load() {
       const storedAccount = yield AsyncStorage.getItem(KEY.ACCOUNT);
