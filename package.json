@@ -15,7 +15,7 @@
     "expo-font": "~6.0.1",
     "expo-localization": "~6.0.0",
     "i18n-js": "^3.3.0",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.21",
     "mobx-devtools-mst": "^0.9.21",
     "native-base": "^2.13.7",
     "prop-types": "^15.7.2",
